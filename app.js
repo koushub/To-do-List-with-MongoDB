@@ -31,10 +31,16 @@ const itemsSchema = new mongoose.Schema({
 const Item = mongoose.model("Item", itemsSchema);
 
 const item1 = new Item({
+  name: "Do something"
+});
+const item2 = new Item({
+  name: "Make water"
+});
+const item3 = new Item({
   name: "Exercise"
 });
 
-const defaultItems = [item1];
+const defaultItems = [item1, item2, item3];
 
 const listSchema = {
   name: String,
