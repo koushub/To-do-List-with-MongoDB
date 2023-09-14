@@ -1,10 +1,9 @@
-//jshint esversion:6
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const date = require(__dirname + "/date.js");
 const mongoose = require('mongoose');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -12,7 +11,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB")
+// mongoose.connect("mongodb+srv://koushubhyadav:kH9TzVJlm4IMw9Zv@todolist.f5hrn0m.mongodb.net/?retryWrites=true&w=majority")
+
+const uri = process.env.MONGODB_URI || '';
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
+    // Your code here
+  })
+  .catch(error => {
+    console.error('Error connecting to MongoDB:', error);
+  });
 
 const itemsSchema = new mongoose.Schema({
   name: String
@@ -176,8 +186,10 @@ app.get("/about", function (req, res) {
   res.render("about");
 });
 
-app.listen(3000, function () {
-  console.log("Server started on port 3000");
+const PORT = process.env.PORT;
+
+app.listen(PORT, function () {
+  console.log("Server started on port " + PORT);
 });
 
 
